@@ -1,64 +1,42 @@
 #include "GameObject.hh"
-#include "Game.hh"
 
-class Game;
-
-GameObject::GameObject(std::string textureUrl, float scale, int width, int height, int column, int row, 
-float posX, float posY, b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window)
+GameObject::GameObject()
 {
-  this->world = world;
+
+}
+
+GameObject::GameObject(const char* textureUrl, sf::Vector2f position, float scale, float width, float height, int col, int row,
+b2BodyType bodyType, sf::RenderWindow*& window, b2World*& world)
+{
   this->window = window;
-  this->scale = scale;
-  this->width = width;
-  this->height = height;
-  this->column = column;
-  this->row = row;
-  this->posX = posX;
-  this->posY = posY;
+  drawable = new Drawable(textureUrl, position, scale, width, height, col, row);
 
-  texture = new sf::Texture();
-  texture->loadFromFile(textureUrl);
-  sprite = new sf::Sprite(*texture, sf::IntRect(column * width, row * height, width, height));
-  sprite->setPosition(posX, posY);
-  sprite->setColor(sf::Color::White);
-  sprite->setScale(scale, scale);
+  rigidbody = new Rigidbody(world, new b2Vec2(position.x, position.y), width * scale, height * scale,
+  bodyType, new b2Vec2(drawable->GetSprite()->getOrigin().x, drawable->GetSprite()->getOrigin().y),
+  0.f, 1.f, 0.f, 0.f, (void*) this);
 
-  rigidbody = new Rigidbody(world, bodyType,
-  new b2Vec2(sprite->getPosition().x, sprite->getPosition().y),
-  width * scale, height * scale, 1, 0, 0, new b2Vec2(sprite->getOrigin().x, sprite->getOrigin().y),
-  0.f);
-
-  sprite->setOrigin(width / 2, height / 2);
-
-  //Game::AddGameObject(this);
+  drawable->GetSprite()->setOrigin(width / 2, height / 2);
 }
 
 GameObject::~GameObject()
 {
-
-}
-
-void GameObject::Start()
-{
-
 }
 
 void GameObject::Update(float& deltaTime)
 {
-  sprite->setPosition(rigidbody->GetPositionSFML());
+  drawable->SetPosition(rigidbody->GetPosition2SFML());
 }
-
 void GameObject::Draw()
 {
-  window->draw(*sprite);
+  window->draw(*drawable->GetSprite());
 }
 
-void GameObject::Input()
+void GameObject::SetTagtName(const char* tagName)
 {
-
+  this->tagName = tagName;
 }
 
-sf::Sprite* GameObject::GetSprite() const
+const char* GameObject::GetTagName() const
 {
-  return sprite;
+  return tagName;
 }

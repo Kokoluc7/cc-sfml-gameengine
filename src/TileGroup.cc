@@ -1,46 +1,42 @@
 #include "TileGroup.hh"
-#include<iostream>
 
-TileGroup::TileGroup(sf::RenderWindow*& window, int COLS, int ROWS, const char* filePath, 
-float scale, float tileWidth, float tileHeight, const char* textureUrl)
+TileGroup::TileGroup(sf::RenderWindow*& window, const char* textureUrl,
+float tileWidth, float tileHeight, float tileScale, int sizeX, int sizeY, const char* tileGroupUrl)
 {
-  this->textureUrl = textureUrl;
-  this->tileWidth = tileWidth;
-  this->tileHeight = tileHeight;
-  this->scale = scale;
-  this->COLS = COLS;
-  this->ROWS = ROWS;
-  this->filePath = filePath;
   reader = new std::ifstream();
-  this->window = window;
   tiles = new std::vector<Tile*>();
-
-  GenerateMap();
+  GenerateTiles(window, textureUrl, tileWidth, tileHeight, tileScale, sizeX, sizeY, tileGroupUrl);
 }
 
 TileGroup::~TileGroup()
 {
-
 }
 
-void TileGroup::GenerateMap()
+void TileGroup::GenerateTiles(sf::RenderWindow*& window, const char* textureUrl,
+float tileWidth, float tileHeight, float tileScale, int sizeX, int sizeY, const char* tileGroupUrl)
 {
-  reader->open(filePath);
-  for(int y{}; y < ROWS; y++)
+
+  reader->open(tileGroupUrl);
+
+  for(int y{}; y < sizeY; y++)
   {
-    for(int x{}; x < COLS; x++)
+    for(int x{}; x < sizeX; x++)
     {
-      char currentTile{};
+      int col{}, row{};
+      int currentCharater{};
 
-      reader->get(currentTile);
-      int posX{atoi(&currentTile) * scale * tileWidth * x};
-      reader->get(currentTile);
-      int posY{atoi(&currentTile) * scale * tileHeight * y};
+      *reader >> currentCharater;
+      col = currentCharater;
 
-      tiles->push_back(new Tile(textureUrl, scale, tileWidth, tileHeight, x, y, posX, posY, window));
-      reader->ignore();
+      *reader >> currentCharater;
+      row = currentCharater;
+
+      tiles->push_back(new Tile(textureUrl, sf::Vector2f(tileWidth * x * tileScale, tileHeight * y * tileScale),
+      tileScale, tileWidth, tileHeight, col, row, window));
     }
+    std::cout << std::endl;
   }
+
   reader->close();
 }
 

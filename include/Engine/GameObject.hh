@@ -1,31 +1,25 @@
 #pragma once
+#include<SFML/Graphics.hpp>
 #include "Rigidbody.hh"
-#include "SFML/Graphics.hpp"
+#include "Drawable.hh"
+
 
 class GameObject
 {
 protected:
-  float scale{};
-  int width{};
-  int height{};
-  int column{};
-  int row{};
-  float posX{};
-  float posY{};
-  sf::Sprite* sprite;
-  sf::Texture* texture;
+  Drawable* drawable{};
+  sf::RenderWindow* window{};
   Rigidbody* rigidbody{};
-  b2World* world{};
-  sf::RenderWindow* window;
+  const char* tagName{};
 public:
-  GameObject(std::string textureUrl, float scale, int width, int height, int column, int row, 
-  float posX, float posY, b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window);
+  GameObject();
+  GameObject(const char* textureUrl, sf::Vector2f position, float scale, float width, float height, int col, int row,
+  b2BodyType bodyType,sf::RenderWindow*& window, b2World*& world);
   ~GameObject();
 
-  virtual void Start();
+  void SetTagtName(const char* tagName);
+  const char* GetTagName() const;
+
   virtual void Update(float& deltaTime);
   virtual void Draw();
-  virtual void Input();
-
-  sf::Sprite* GetSprite() const;
 };

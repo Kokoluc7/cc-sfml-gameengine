@@ -10,9 +10,7 @@ int main()
 */
 
   Game* game{new Game()};
-  game->Initialize();
-
-  delete game;
+  game->Run();
 
   return EXIT_SUCCESS;
 }

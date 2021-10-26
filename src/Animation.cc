@@ -1,39 +1,36 @@
 #include "Animation.hh"
 
-Animation::Animation(){}
-
-Animation::Animation(sf::Sprite* sprite, int startFrame, int endFrame, float animationDelay, int currentAnimation)
+Animation:: Animation(float delay, int row,int startFrame, int endFrame, float width, float height, Drawable*& drawable)
 {
-  this->sprite = sprite;
+  this->delay = delay;
+  this->row = row;
   this->startFrame = startFrame;
   this->endFrame = endFrame;
-  this->animationDelay = animationDelay;
-  this->currentAnimation = currentAnimation;
-  animationIndex = startFrame;
-}
-
-void Animation::Play(float& deltaTime)
-{
-  currentTime += deltaTime;
-
-  sprite->setTextureRect(sf::IntRect(animationIndex * sprite->getTextureRect().width,
-  currentAnimation * sprite->getTextureRect().height, sprite->getTextureRect().width, 
-  sprite->getTextureRect().height));
-
-  if(currentTime >= animationDelay)
-  {
-    if(animationIndex == endFrame)
-    {
-      animationIndex = startFrame;
-    }
-    else
-    {
-      animationIndex++;
-    }
-    currentTime = 0.f;
-  }
+  this->width = width;
+  this->height = height;
+  currentFrame = startFrame;
+  this->drawable = drawable;
 }
 
 Animation::~Animation()
 {
+}
+
+void Animation::Play(float& deltaTime)
+{
+  timer += deltaTime;
+  if(timer >= delay)
+  {
+    drawable->RebindRect(currentFrame * width, row * height, width, height);
+    //cambiar de frame
+    timer = 0.f;
+    if(currentFrame < endFrame)
+    {
+      currentFrame++;
+    }
+    else
+    {
+      currentFrame = startFrame;
+    }
+  }
 }

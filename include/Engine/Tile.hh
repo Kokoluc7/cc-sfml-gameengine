@@ -1,25 +1,13 @@
 #pragma once
-
 #include<SFML/Graphics.hpp>
+#include "Drawable.hh"
 
-class Tile
+class Tile : public Drawable
 {
 private:
-  float scale{};
-  int width{};
-  int height{};
-  int column{};
-  int row{};
-  float posX{};
-  float posY{};
-  sf::Sprite* sprite;
-  sf::Texture* texture;
-  sf::RenderWindow* window;
+  sf::RenderWindow* window{};
 public:
-  Tile(std::string textureUrl, float scale, int width, int height, int column, int row, 
-  float posX, float posY, sf::RenderWindow*& window);
+  Tile(const char* textureUrl, sf::Vector2f position, float scale, float width, float height, int col, int row, sf::RenderWindow*& window);
   ~Tile();
-
   void Draw();
 };
-© 2021 GitHub, Inc.

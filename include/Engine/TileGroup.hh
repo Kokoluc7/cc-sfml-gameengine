@@ -1,23 +1,19 @@
 #pragma once
 #include "Tile.hh"
+#include<iostream>
 #include<fstream>
 
 class TileGroup
 {
 private:
-  sf::RenderWindow* window;
-  std::vector<Tile*>* tiles;
-  int COLS{}, ROWS{};
   std::ifstream* reader{};
-  const char* filePath{};
-  float scale;
-  float tileWidth{}, tileHeight{};
-  const char* textureUrl{};
+  int sizeX{}, sizeY{};
+  void GenerateTiles(sf::RenderWindow*& window, const char* textureUrl,
+  float tileWidth, float tileHeight, float tileScale, int sizeX, int sizeY, const char* tileGroupUrl);
+  std::vector<Tile*>* tiles;
 public:
-  TileGroup(sf::RenderWindow*& window, int COLS, int ROWS, const char* filePath, 
-  float scale, float tileWidth, float tileHeight, const char* textureUrl);
+  TileGroup(sf::RenderWindow*& window, const char* textureUrl,
+  float tileWidth, float tileHeight, float tileScale, int sizeX, int sizeY, const char* tileGroupUrl);
   ~TileGroup();
-
-  void GenerateMap();
   void Draw();
 };
