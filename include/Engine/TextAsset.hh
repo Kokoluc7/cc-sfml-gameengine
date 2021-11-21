@@ -13,4 +13,6 @@ public:
   const sf::String message, float size, sf::Color color, sf::Vector2f position);
   ~TextAsset();
   void Draw();
+
+  void SetOrigin(float x, float y);
 };

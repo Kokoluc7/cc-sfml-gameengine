@@ -35,3 +35,19 @@ sf::Vector2f InputSystem::GetAxis()
 
   return axis;
 }
+
+sf::Vector2i InputSystem::GetMousePosition(sf::RenderWindow*& window)
+{
+  return sf::Mouse::getPosition(*window);
+}
+
+bool InputSystem::OnClick()
+{
+  return sf::Mouse::isButtonPressed(sf::Mouse::Left);
+}
+
+bool InputSystem::HoverUI(sf::RenderWindow*& window, sf::FloatRect floatRect)
+{
+  sf::Vector2f mousePos2Pixel{window->mapPixelToCoords(GetMousePosition(window))};
+  return floatRect.contains(mousePos2Pixel);
+}

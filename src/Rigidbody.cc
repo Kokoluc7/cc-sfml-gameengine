@@ -1,13 +1,14 @@
 #include "Rigidbody.hh"
 
-Rigidbody::Rigidbody(b2World*& wolrd, b2Vec2* position, float width, float height,
+Rigidbody::Rigidbody(b2World*& world, b2Vec2* position, float width, float height,
 b2BodyType bodyType, b2Vec2* origin, float angle, float density,
 float friction, float restitution, void* data)
 {
+  this->world = world;
   bodyDef = new b2BodyDef();
   bodyDef->type = bodyType;
   bodyDef->position = *position;
-  body = wolrd->CreateBody(bodyDef);
+  body = world->CreateBody(bodyDef);
 
   polysonShape = new b2PolygonShape();
   polysonShape->SetAsBox(width / 2, height / 2, *origin, angle);
@@ -24,6 +25,7 @@ float friction, float restitution, void* data)
 
 Rigidbody::~Rigidbody()
 {
+  world->DestroyBody(body);
 }
 
 b2Body* Rigidbody::GetBody() const
@@ -39,9 +41,9 @@ sf::Vector2f Rigidbody::GetPosition2SFML() const
   return sf::Vector2f(body->GetPosition().x, body->GetPosition().y);
 }
 
-void Rigidbody::MoveBody(b2Vec2* velocity)
+void Rigidbody::MoveBody(b2Vec2 velocity)
 {
-  body->SetLinearVelocity(*velocity);
+  body->SetLinearVelocity(velocity);
 }
 
 void Rigidbody::FreezeRotation(bool freeze)

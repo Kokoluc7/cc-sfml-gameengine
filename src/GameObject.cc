@@ -1,10 +1,5 @@
 #include "GameObject.hh"
 
-GameObject::GameObject()
-{
-
-}
-
 GameObject::GameObject(const char* textureUrl, sf::Vector2f position, float scale, float width, float height, int col, int row,
 b2BodyType bodyType, sf::RenderWindow*& window, b2World*& world)
 {
@@ -20,6 +15,8 @@ b2BodyType bodyType, sf::RenderWindow*& window, b2World*& world)
 
 GameObject::~GameObject()
 {
+  delete drawable;
+  delete rigidbody;
 }
 
 void GameObject::Update(float& deltaTime)
@@ -31,12 +28,17 @@ void GameObject::Draw()
   window->draw(*drawable->GetSprite());
 }
 
-void GameObject::SetTagtName(const char* tagName)
+void GameObject::SetTagtName(std::string  tagName)
 {
   this->tagName = tagName;
 }
 
-const char* GameObject::GetTagName() const
+std::string GameObject::GetTagName() const
 {
   return tagName;
+}
+
+sf::Vector2f GameObject::GetPosition() const
+{
+  return rigidbody->GetPosition2SFML();
 }

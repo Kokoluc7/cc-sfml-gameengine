@@ -21,6 +21,7 @@ private:
   sf::Clock* gameClock{};
 
   std::vector<GameObject*>* gameObjects;
+  std::vector<GameObject*>* gameObjectsDeleteList;
 
   void MainLoop();
   void UpdatePhysics();

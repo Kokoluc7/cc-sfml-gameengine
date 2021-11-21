@@ -20,3 +20,8 @@ void TextAsset::Draw()
 {
   window->draw(*text);
 }
+
+void TextAsset::SetOrigin(float x, float y)
+{
+  text->setOrigin(x, y);
+}

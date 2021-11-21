@@ -1,10 +1,11 @@
 #pragma once
 #include "GameObject.hh"
-#include "Animation.hh"
+#include "AnimationsManager.hh"
+
 class Candle : public GameObject
 {
 private:
-  Animation* idleAnim{};
+  AnimationsManager* animationsManager{};
 public:
   Candle(const char* textureUrl, sf::Vector2f position, 
   float scale, float width, float height, int col, int row, 

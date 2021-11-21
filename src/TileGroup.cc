@@ -18,6 +18,12 @@ float tileWidth, float tileHeight, float tileScale, int sizeX, int sizeY, const 
 
   reader->open(tileGroupUrl);
 
+  for(auto& tile : *tiles)
+  {
+    delete tile;
+  }
+  tiles->clear();
+
   for(int y{}; y < sizeY; y++)
   {
     for(int x{}; x < sizeX; x++)
@@ -34,9 +40,7 @@ float tileWidth, float tileHeight, float tileScale, int sizeX, int sizeY, const 
       tiles->push_back(new Tile(textureUrl, sf::Vector2f(tileWidth * x * tileScale, tileHeight * y * tileScale),
       tileScale, tileWidth, tileHeight, col, row, window));
     }
-    std::cout << std::endl;
   }
-
   reader->close();
 }
 
